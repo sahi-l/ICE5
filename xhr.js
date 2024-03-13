@@ -27,6 +27,53 @@ function getXhr(resource_url) {
     // Directly calling handleSuccess with simulated response
     handleSuccess({ response: JSON.stringify(jsonData) });
 }
+async function getFetch(resource_url){
+    try{
+        const headers=new Headers({
+            "Content-Type":"application/json"
+        });
+        const request = new Request(resource_url,{
+            method: "GET",
+            headers:headers
+        });
+        const result=await fetch(request);
+        console.log(result);
+        if(result.ok){
+            handleSuccess(await result.json());
+        }
+        else{
+            handleError(await result.json());
+        }
+    }
+    catch(ex){
+        console.log(ex);
+    }
+}
+
+
+
+function getAjax(resource_url)
+{
+    const settings = {
+        url: resource_url,
+        headers: {
+            "Content-type": "application/json"
+        }
+    }
+    $.ajax(settings)
+      .done(handleSuccess)
+      .fail(handleError)
+}
+
+function getFetch(resource_url)
+{
+    fetch(resource_url)
+        .then(handleSuccess)
+        .catch(handleError)
+
+}
+
+
 
 function handleSuccess(res) {
     console.log(res);
